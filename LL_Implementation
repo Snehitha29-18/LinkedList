@@ -1,0 +1,135 @@
+public class LL {
+    public static class LinkedList {
+        private Node head;
+
+        // Node class representing each element in the LinkedList
+        class Node {
+            int value;
+            Node next;
+
+            Node(int value) {
+                this.value = value;
+                this.next = null;
+            }
+        }
+
+        // Constructor to initialize LinkedList with a single value
+        LinkedList(int value) {
+            head = new Node(value);
+        }
+
+        // Print the entire LinkedList
+        public void printList() {
+            Node temp = head;
+            while (temp != null) {
+                System.out.print(temp.value + "-->");
+                temp = temp.next;
+            }
+            System.out.println("null");
+        }
+
+        // Append a new node at the end of the LinkedList
+        public void append(int value) {
+            Node newNode = new Node(value);
+            if (head == null) {
+                head = newNode;
+                return;
+            }
+            Node temp = head;
+            while (temp.next != null) {
+                temp = temp.next;
+            }
+            temp.next = newNode;
+        }
+
+        // Prepend a new node at the beginning of the LinkedList
+        public void prepend(int value) {
+            Node newNode = new Node(value);
+            newNode.next = head;
+            head = newNode;
+        }
+
+        // Insert a new node at the Kth position
+        public void insertKth(int k, int value) {
+            if (k == 1) {
+                prepend(value); // Prepend if inserting at the head
+                return;
+            }
+            Node temp = head;
+            int count = 0;
+            while(temp != null){
+                count++;
+                if(count == k-1){
+                    Node newNode = new Node(value);
+                    newNode.next = temp.next;
+                    temp.next=newNode;
+                    break;
+                }
+                temp = temp.next;
+            }
+        }
+
+        // Remove the last node in the LinkedList
+        public void removeLast() {
+            if (head == null || head.next == null) {
+                head = null;
+                return;
+            }
+            Node temp = head;
+            while (temp.next.next != null) {
+                temp = temp.next;
+            }
+            temp.next = null;
+        }
+
+        // Remove the first node in the LinkedList
+        public void removeFirst() {
+            if (head != null) {
+                head = head.next;
+            }
+        }
+
+        // Remove the node at the Kth position
+        public void removeKth(int k) {
+            if (k == 1) {
+                removeFirst(); // Remove first node if k is 1
+                return;
+            }
+            Node temp = head;
+            Node prev = null;
+            int count = 0;
+            while(temp != null){
+                count++;
+                if(count == k){
+                    prev.next = prev.next.next;
+                    break;
+                }
+                prev = temp;
+                temp=temp.next;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        LinkedList myLinkedList = new LinkedList(4);
+        myLinkedList.printList();
+        myLinkedList.append(5);
+        myLinkedList.append(6);
+        myLinkedList.printList(); // Outputs: 4-->5-->6-->null
+
+        myLinkedList.prepend(3);  // Prepend 3 at the beginning
+         myLinkedList.printList(); // Outputs: 3-->4-->5-->6-->null
+
+        myLinkedList.insertKth(3, 8);  // Insert 8 at the 3rd position
+        myLinkedList.printList(); // Outputs: 3-->4-->8-->5-->6-->null
+
+        myLinkedList.removeLast();  // Remove the last node
+        myLinkedList.printList(); // Outputs: 3-->4-->8-->5-->null
+
+        myLinkedList.removeFirst();  // Remove the first node
+        myLinkedList.printList(); // Outputs: 4-->8-->5-->null
+
+        myLinkedList.removeKth(2);  // Remove the node at the 2nd position
+        myLinkedList.printList(); // Outputs: 4-->5-->null
+    }
+}
