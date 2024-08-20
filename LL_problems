@@ -1,0 +1,233 @@
+public class LL {
+    public static class LinkedList {
+        private Node head;
+
+        // Node class representing each element in the LinkedList
+        class Node {
+            int value;
+            Node next;
+
+            Node(int value) {
+                this.value = value;
+                this.next = null;
+            }
+        }
+
+        // Constructor to initialize LinkedList with a single value
+        LinkedList(int value) {
+            head = new Node(value);
+        }
+
+        // Print the entire LinkedList
+        public void printList() {
+            Node temp = head;
+            while (temp != null) {
+                System.out.print(temp.value + "-->");
+                temp = temp.next;
+            }
+            System.out.println("null");
+        }
+
+        // Append a new node at the end of the LinkedList
+        public void append(int value) {
+            Node newNode = new Node(value);
+            if (head == null) {
+                head = newNode;
+                return;
+            }
+            Node temp = head;
+            while (temp.next != null) {
+                temp = temp.next;
+            }
+            temp.next = newNode;
+        }
+
+        // Prepend a new node at the beginning of the LinkedList
+        public void prepend(int value) {
+            Node newNode = new Node(value);
+            newNode.next = head;
+            head = newNode;
+        }
+
+        // Insert a new node at the Kth position
+        public void insertKth(int k, int value) {
+            if (k == 1) {
+                prepend(value); // Prepend if inserting at the head
+                return;
+            }
+            Node temp = head;
+            int count = 1;
+            while (temp != null && count < k - 1) {
+                temp = temp.next;
+                count++;
+            }
+            if (temp != null) {
+                Node newNode = new Node(value);
+                newNode.next = temp.next;
+                temp.next = newNode;
+            }
+        }
+
+        // Remove the last node in the LinkedList
+        public void removeLast() {
+            if (head == null || head.next == null) {
+                head = null;
+                return;
+            }
+            Node temp = head;
+            while (temp.next.next != null) {
+                temp = temp.next;
+            }
+            temp.next = null;
+        }
+
+        // Remove the first node in the LinkedList
+        public void removeFirst() {
+            if (head != null) {
+                head = head.next;
+            }
+        }
+
+        // Remove the node at the Kth position
+        public void removeKth(int k) {
+            if (k == 1) {
+                removeFirst(); // Remove first node if k is 1
+                return;
+            }
+            Node temp = head;
+            Node prev = null;
+            int count = 1;
+            while (temp != null && count < k) {
+                prev = temp;
+                temp = temp.next;
+                count++;
+            }
+            if (temp != null && prev != null) {
+                prev.next = temp.next;
+            }
+        }
+        //length of the linked list
+        int llLength(){
+            Node temp = head;
+            int count =0;
+            while(temp != null){
+                count++;
+                temp = temp.next;
+            }
+            return count;
+        }
+        //serach in Linked List 
+        boolean llSearch(int val){
+            Node temp = head;
+            while(temp != null){
+                if(temp.value == val){
+                    return true;
+                }
+                temp = temp.next;
+            }
+            return false;
+        }
+        //Middle of the Linked List
+        Node llMiddle(){
+            Node slow = head;
+            Node fast = head;
+            while(fast != null && fast.next != null){
+                slow = slow.next;
+                fast = fast.next.next;
+            }
+            return slow;
+        }
+        //reverse the linked list
+        Node llReverse(){
+            Node temp = head;
+            Node prev = null;
+            while(temp != null){
+                Node front = temp.next;
+                temp.next = prev;
+                prev = temp;
+                temp = front;
+            }
+            head = prev;
+            return head;
+        }
+        // detech a lopp
+        boolean llDetectLoop(){
+            Node slow = head;
+            Node fast = head;
+            while(fast != null && fast.next != null){
+                slow = slow.next;
+                fast = fast.next.next;
+                if(slow == fast){
+                    return true;
+                }
+            }
+            return false;
+        }
+        // starting point of a linked list if it has a loop
+        Node firstNode() {
+        // Initialize a slow and fast 
+        // pointers to the head of the list
+            Node slow = head;  
+            Node fast = head;  
+        // Phase 1: Detect the loop
+            while (fast != null && fast.next != null) {
+            // Move slow one step
+                slow = slow.next;        
+            // Move fast two steps
+                fast = fast.next.next;  
+            // If slow and fast meet,
+            // a loop is detected
+                if (slow == fast) {
+                // Reset the slow pointer
+                // to the head of the list
+                    slow = head;
+                // Phase 2: Find the first node of the loop
+                    while (slow != fast) {
+                    // Move slow and fast one step
+                    // at a time
+                        slow = slow.next;  
+                        fast = fast.next; 
+                    // When slow and fast meet again,
+                    // it's the first node of the loop
+                    }
+                return slow;   // Return the first node of the loop
+                }
+            }
+            return null; // If no loop is found, return null
+        }
+    }
+
+
+    public static void main(String[] args) {
+        LinkedList myLinkedList = new LinkedList(4);
+        myLinkedList.append(5);
+        myLinkedList.append(6);
+        myLinkedList.printList(); // Outputs: 4-->5-->6-->null
+
+        myLinkedList.prepend(3);  // Prepend 3 at the beginning
+        myLinkedList.printList(); // Outputs: 3-->4-->5-->6-->null
+
+        myLinkedList.insertKth(3, 8);  // Insert 8 at the 3rd position
+        myLinkedList.printList(); // Outputs: 3-->4-->8-->5-->6-->null
+
+        myLinkedList.removeLast();  // Remove the last node
+        myLinkedList.printList(); // Outputs: 3-->4-->8-->5-->null
+
+        myLinkedList.removeFirst();  // Remove the first node
+        myLinkedList.printList(); // Outputs: 4-->8-->5-->null
+
+        myLinkedList.removeKth(2);  // Remove the node at the 2nd position
+        myLinkedList.printList(); // Outputs: 4-->5-->null
+        System.out.println(myLinkedList.llLength());
+        System.out.println(myLinkedList.llSearch(5));
+        System.out.println(myLinkedList.llMiddle().value);
+         System.out.println("Length of LinkedList: " + myLinkedList.llLength()); // Outputs: 3
+        System.out.println("Search for 5 in LinkedList: " + myLinkedList.llSearch(5)); // Outputs: true
+        System.out.println("Middle of LinkedList: " + myLinkedList.llMiddle().value); // Outputs: 5
+        myLinkedList.llReverse();
+        myLinkedList.printList();
+        System.out.println(myLinkedList.llDetectLoop());
+        System.out.println(myLinkedList.firstNode());
+        myLinkedList.printList();
+    }
+}
